@@ -11,10 +11,10 @@ import (
 	"sync"
 )
 
-type Topic struct {
+type topic struct {
 }
 
-func (t *Topic) PublicTopic(ctx *gin.Context, params *request.PublicTopic) (int64, errcode.Err) {
+func (t *topic) PublicTopic(ctx *gin.Context, params *request.PublicTopic) (int64, errcode.Err) {
 	id, err := dao.Store.SaveTopic(ctx, params.Title, params.Content)
 	if err != nil {
 		global.Log.Println(err)
@@ -23,7 +23,7 @@ func (t *Topic) PublicTopic(ctx *gin.Context, params *request.PublicTopic) (int6
 	return id, nil
 }
 
-func (t *Topic) QueryTopic(ctx *gin.Context, params *request.QueryTopic) (*response.QueryTopic, errcode.Err) {
+func (t *topic) QueryTopic(ctx *gin.Context, params *request.QueryTopic) (*response.QueryTopic, errcode.Err) {
 	wg := sync.WaitGroup{}
 	wg.Add(2)
 	var (

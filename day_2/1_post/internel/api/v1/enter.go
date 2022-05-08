@@ -1,8 +1,8 @@
 package v1
 
 type group struct {
-	PostApi
-	TopicApi
+	Post  post
+	Topic topic
 }
 
 var Group = new(group)

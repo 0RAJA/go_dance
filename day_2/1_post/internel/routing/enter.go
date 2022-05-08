@@ -1,8 +1,8 @@
 package routing
 
 type routingGroup struct {
-	PostRouter
-	TopicRouter
+	Post  post
+	Topic topic
 }
 
 var Group = new(routingGroup)

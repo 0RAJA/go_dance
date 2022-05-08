@@ -9,14 +9,14 @@ import (
 	"time"
 )
 
-type PostDB struct {
+type postDB struct {
 	list map[int64][]database.Post
 	rw   sync.RWMutex
 	db   io.ReadWriteCloser
 }
 
-func initPostDB(db io.ReadWriteCloser) (*PostDB, error) {
-	postDB := &PostDB{list: map[int64][]database.Post{}, rw: sync.RWMutex{}, db: db}
+func initPostDB(db io.ReadWriteCloser) (*postDB, error) {
+	postDB := &postDB{list: map[int64][]database.Post{}, rw: sync.RWMutex{}, db: db}
 	if err := fileToData[database.Post](db, func(post database.Post) {
 		postDB.list[post.ParentId] = append(postDB.list[post.ParentId], post)
 	}); err != nil {
@@ -25,7 +25,7 @@ func initPostDB(db io.ReadWriteCloser) (*PostDB, error) {
 	return postDB, nil
 }
 
-func (D *PostDB) SavePost(ctx context.Context, ParentId int64, Content string) (int64, error) {
+func (D *postDB) SavePost(ctx context.Context, ParentId int64, Content string) (int64, error) {
 	D.rw.Lock()
 	defer D.rw.Unlock()
 	post := database.Post{
@@ -42,7 +42,7 @@ func (D *PostDB) SavePost(ctx context.Context, ParentId int64, Content string) (
 	return post.Id, nil
 }
 
-func (D *PostDB) QueryPostsByTopicID(ctx context.Context, topicID int64) ([]database.Post, error) {
+func (D *postDB) QueryPostsByTopicID(ctx context.Context, topicID int64) ([]database.Post, error) {
 	D.rw.RLock()
 	defer D.rw.RUnlock()
 	if posts, ok := D.list[topicID]; ok {
@@ -51,6 +51,6 @@ func (D *PostDB) QueryPostsByTopicID(ctx context.Context, topicID int64) ([]data
 	return []database.Post{}, nil
 }
 
-func (D *PostDB) Close() {
+func (D *postDB) Close() {
 	D.db.Close()
 }

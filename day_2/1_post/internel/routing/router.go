@@ -6,8 +6,8 @@ func NewRouter() *gin.Engine {
 	r := gin.Default()
 	root := r.Group("/")
 	{
-		Group.InitPostRouter(root)
-		Group.InitTopicRouter(root)
+		Group.Topic.Init(root)
+		Group.Post.Init(root)
 	}
 	return r
 }

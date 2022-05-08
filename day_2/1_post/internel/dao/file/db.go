@@ -10,8 +10,8 @@ import (
 )
 
 type DB struct {
-	*PostDB
-	*TopicDB
+	*postDB
+	*topicDB
 }
 
 func initDB(filePath string, f func(db io.ReadWriteCloser) error) error {
@@ -29,13 +29,13 @@ func InitByPath(basePath string) (*DB, error) {
 	var err error
 	var db = new(DB)
 	if err := initDB(path.Join(basePath, "topicDB"), func(open io.ReadWriteCloser) error {
-		db.TopicDB, err = initTopicDB(open)
+		db.topicDB, err = initTopicDB(open)
 		return err
 	}); err != nil {
 		return nil, err
 	}
 	if err := initDB(path.Join(basePath, "postDB"), func(open io.ReadWriteCloser) error {
-		db.PostDB, err = initPostDB(open)
+		db.postDB, err = initPostDB(open)
 		return err
 	}); err != nil {
 		return nil, err
@@ -44,8 +44,8 @@ func InitByPath(basePath string) (*DB, error) {
 }
 
 func (db *DB) Close() {
-	db.TopicDB.Close()
-	db.PostDB.Close()
+	db.topicDB.Close()
+	db.postDB.Close()
 }
 
 func openFile(path string) (io.ReadWriteCloser, error) {

@@ -5,12 +5,12 @@ import (
 	v1 "go_dance/day_2/1_post/internel/api/v1"
 )
 
-type TopicRouter struct{}
+type topic struct{}
 
-func (router *TopicRouter) InitTopicRouter(group *gin.RouterGroup) {
+func (router *topic) Init(group *gin.RouterGroup) {
 	topicGroup := group.Group("topic")
 	{
-		topicGroup.POST("public", v1.Group.TopicApi.PublicTopic)
-		topicGroup.GET("get", v1.Group.TopicApi.QueryTopic)
+		topicGroup.POST("public", v1.Group.Topic.PublicTopic)
+		topicGroup.GET("get", v1.Group.Topic.QueryTopic)
 	}
 }

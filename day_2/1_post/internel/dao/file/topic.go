@@ -9,14 +9,14 @@ import (
 	"time"
 )
 
-type TopicDB struct {
+type topicDB struct {
 	list map[int64]database.Topic
 	rw   sync.RWMutex
 	db   io.ReadWriteCloser
 }
 
-func initTopicDB(db io.ReadWriteCloser) (*TopicDB, error) {
-	topicDB := &TopicDB{rw: sync.RWMutex{}, list: map[int64]database.Topic{}, db: db}
+func initTopicDB(db io.ReadWriteCloser) (*topicDB, error) {
+	topicDB := &topicDB{rw: sync.RWMutex{}, list: map[int64]database.Topic{}, db: db}
 	if err := fileToData[database.Topic](db, func(topic database.Topic) {
 		topicDB.list[topic.Id] = topic
 	}); err != nil {
@@ -25,7 +25,7 @@ func initTopicDB(db io.ReadWriteCloser) (*TopicDB, error) {
 	return topicDB, nil
 }
 
-func (D *TopicDB) SaveTopic(ctx context.Context, Title, Content string) (int64, error) {
+func (D *topicDB) SaveTopic(ctx context.Context, Title, Content string) (int64, error) {
 	D.rw.Lock()
 	defer D.rw.Unlock()
 	topic := database.Topic{
@@ -42,7 +42,7 @@ func (D *TopicDB) SaveTopic(ctx context.Context, Title, Content string) (int64, 
 	return topic.Id, nil
 }
 
-func (D *TopicDB) QueryTopic(ctx context.Context, topicID int64) (*database.Topic, error) {
+func (D *topicDB) QueryTopic(ctx context.Context, topicID int64) (*database.Topic, error) {
 	D.rw.RLock()
 	defer D.rw.RUnlock()
 	if topic, ok := D.list[topicID]; ok {
@@ -51,6 +51,6 @@ func (D *TopicDB) QueryTopic(ctx context.Context, topicID int64) (*database.Topi
 	return nil, nil
 }
 
-func (D *TopicDB) Close() {
+func (D *topicDB) Close() {
 	D.db.Close()
 }

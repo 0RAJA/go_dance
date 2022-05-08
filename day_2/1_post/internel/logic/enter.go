@@ -1,8 +1,8 @@
 package logic
 
 type group struct {
-	Post
-	Topic
+	Post  post
+	Topic topic
 }
 
 var Group = new(group)

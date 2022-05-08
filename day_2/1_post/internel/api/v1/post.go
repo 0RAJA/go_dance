@@ -9,9 +9,9 @@ import (
 	"go_dance/day_2/1_post/internel/pkg/app/errcode"
 )
 
-type PostApi struct{}
+type post struct{}
 
-func (api *PostApi) PublicPost(ctx *gin.Context) {
+func (api *post) PublicPost(ctx *gin.Context) {
 	reply := app.NewReply(ctx)
 	params := new(request.PublicPost)
 	if err := ctx.ShouldBindJSON(params); err != nil {

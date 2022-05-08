@@ -8,9 +8,9 @@ import (
 	"go_dance/day_2/1_post/internel/pkg/app/errcode"
 )
 
-type Post struct{}
+type post struct{}
 
-func (post *Post) PublicPost(ctx *gin.Context, params *request.PublicPost) (int64, errcode.Err) {
+func (post *post) PublicPost(ctx *gin.Context, params *request.PublicPost) (int64, errcode.Err) {
 	postData, err := dao.Store.QueryTopic(ctx, params.ParentId)
 	if err != nil {
 		global.Log.Println(err)

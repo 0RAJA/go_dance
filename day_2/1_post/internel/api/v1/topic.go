@@ -9,9 +9,9 @@ import (
 	"go_dance/day_2/1_post/internel/pkg/app/errcode"
 )
 
-type TopicApi struct{}
+type topic struct{}
 
-func (api *TopicApi) PublicTopic(ctx *gin.Context) {
+func (api *topic) PublicTopic(ctx *gin.Context) {
 	reply := app.NewReply(ctx)
 	params := new(request.PublicTopic)
 	if err := ctx.ShouldBindJSON(params); err != nil {
@@ -31,7 +31,7 @@ func (api *TopicApi) PublicTopic(ctx *gin.Context) {
 	reply.ToResponseData(data)
 }
 
-func (api *TopicApi) QueryTopic(ctx *gin.Context) {
+func (api *topic) QueryTopic(ctx *gin.Context) {
 	reply := app.NewReply(ctx)
 	params := new(request.QueryTopic)
 	if err := ctx.ShouldBindJSON(params); err != nil {
